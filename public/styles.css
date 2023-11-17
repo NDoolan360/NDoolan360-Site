@@ -239,7 +239,6 @@ nav {
   flex-direction: column;
   min-width: fit-content;
   max-width: 20.25rem;
-  box-shadow: 0 var(--unit-size-1-2) var(--unit-size-1-2) var(--colour-background);
   gap: var(--unit-size-3);
   z-index: 1;
   padding: var(--unit-size-3);
@@ -266,6 +265,7 @@ main {
     background-color: var(--colour-background);
     max-width: 100%;
     align-items: center;
+    box-shadow: 0 var(--unit-size-1-2) var(--unit-size-1-2) var(--colour-background);
     gap: var(--unit-size) var(--unit-size-4);
     padding: var(--unit-size-2);
     padding-bottom: var(--unit-size-1-2);
@@ -371,6 +371,14 @@ section>div {
 
 #hero {
   height: 100vh;
+  object-fit: cover;
+  min-width: 100%;
+  position: relative;
+}
+
+#hero > img {
+  height: 100vh;
+  position: absolute;
   object-fit: cover;
   min-width: 100%;
 }
