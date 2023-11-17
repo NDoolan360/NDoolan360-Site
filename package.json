@@ -8,7 +8,8 @@
         "build": "tsc && vite build",
         "preview": "vite preview --port 8080",
         "lint": "eslint . --ignore-path .gitignore --ext .ts",
-        "format": "prettier . --check --ignore-path .gitignore"
+        "format": "prettier . --check --ignore-path .gitignore",
+        "test": "echo No tests created yet"
     },
     "devDependencies": {
         "@types/dompurify": "^3.0.5",
