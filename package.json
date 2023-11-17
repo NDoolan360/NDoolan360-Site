@@ -14,7 +14,7 @@
         "lint:ts": "eslint --ignore-path .gitignore **/*.ts",
         "lint:css": "stylelint --ignore-path .gitignore **/*.css",
         "format": "prettier --check --ignore-path .gitignore .",
-        "test": "echo No tests created yet"
+        "test": "vitest"
     },
     "devDependencies": {
         "@types/dompurify": "^3.0.5",
@@ -24,13 +24,15 @@
         "eslint": "^8.53.0",
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-import": "^2.29.0",
+        "jsdom": "^22.1.0",
         "prettier": "^3.1.0",
         "stylelint": "^15.11.0",
         "stylelint-config-idiomatic-order": "github:NDoolan360/stylelint-config-idiomatic-order",
         "stylelint-config-standard": "^34.0.0",
         "typescript": "^5.2.2",
         "vite": "^5.0.0",
-        "vite-plugin-eslint": "^1.8.1"
+        "vite-plugin-eslint": "^1.8.1",
+        "vitest": "^0.34.6"
     },
     "dependencies": {
         "@vercel/analytics": "^1.1.1",
