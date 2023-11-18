@@ -1,3 +1,5 @@
+import './theme-switch.css';
+
 // Below script Adapted from:
 // https://web.dev/patterns/theming/theme-switch/#js
 let theme = 'light';
