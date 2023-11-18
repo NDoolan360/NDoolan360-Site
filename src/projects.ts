@@ -82,15 +82,21 @@ export const scrapeCults3d = (doc: Document): Project[] => {
             url = new URL(urlElement.getAttribute('href')!, 'https://cults3d.com');
         }
         if (imageElement?.getAttribute('data-src')) {
-            const source = imageElement?.getAttribute('data-src');
+            let source = imageElement?.getAttribute('data-src');
+            let sourceBackup = null;
 
             // extract full size file rather than thumbnail image if possible
             const regex = /https:\/\/files\.cults3d\.com[^'"]+/;
             const match = source?.match(regex);
 
+            if (match && match[0]) {
+                sourceBackup = source;
+                source = match[0];
+            }
+
             image = {
-                src: match ? match[0] : null,
-                srcBackup: source,
+                src: source,
+                srcBackup: sourceBackup,
                 alt: imageElement.getAttribute('alt'),
             } as Image;
         }
