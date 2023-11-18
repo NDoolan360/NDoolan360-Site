@@ -135,6 +135,14 @@ export const scrapeBgg = (doc: Document): Project[] => {
     return bggProjects;
 };
 
+export const upgradeBggImage = (project: Project, xmlDoc: XMLDocument) => {
+    const imageXmlElement = xmlDoc.getElementsByTagName('image').item(0);
+    if (imageXmlElement && project.image) {
+        project.image.srcBackup = project.image.src;
+        project.image.src = imageXmlElement.innerHTML;
+    }
+};
+
 export const projectIntoTemplate = (project: Project, template: HTMLTemplateElement): DocumentFragment => {
     const templateClone = document.importNode(template.content, true);
 
@@ -251,11 +259,7 @@ export const loadProjects = async () => {
             ?.split('/')
             .find((v) => v.match(/\d+/g));
         const gameXml = await fetchData(`/xmlapi/boardgamegeek/${id}`, 'text/xml');
-        const imageXmlElement = gameXml.getElementsByTagName('image').item(0);
-        if (imageXmlElement && project.image) {
-            project.image.srcBackup = project.image.src;
-            project.image.src = imageXmlElement.innerHTML;
-        }
+        upgradeBggImage(project, gameXml);
     }
 
     const bggProjects = bggRawProjects.map((p) => projectIntoTemplate(p, template));
