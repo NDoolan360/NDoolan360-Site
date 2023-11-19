@@ -18,8 +18,8 @@
 :root {
     color-scheme: dark;
 
-    --font-header: 'Oxygen Mono', 'Courier New', courier, monospace;
-    --font-body: 'Josefin Sans', 'Segoe UI', tahoma, geneva, verdana, sans-serif;
+    --font-mono: 'Oxygen Mono', 'Courier New', courier, monospace;
+    --font-sans: 'Josefin Sans', 'Segoe UI', tahoma, geneva, verdana, sans-serif;
     --font-size-small: 0.875rem;
     --font-size-medium: 1rem;
     --font-size-large: 1.5rem;
@@ -108,7 +108,7 @@ h6 {
 /* ===================================================== */
 
 h1 {
-    font-family: var(--font-header);
+    font-family: var(--font-mono);
     font-size: var(--font-size-xl);
     line-height: var(--unit-size-4);
 }
@@ -118,7 +118,7 @@ h3,
 a {
     display: block;
     border-radius: 2px;
-    font-family: var(--font-header);
+    font-family: var(--font-mono);
     font-size: var(--font-size-medium);
     line-height: var(--unit-size-2);
     text-transform: lowercase;
@@ -215,7 +215,7 @@ body {
     align-items: flex-start;
     background-color: var(--colour-background);
     color: var(--colour-text);
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     font-size: var(--font-size-medium);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -435,7 +435,7 @@ section > div {
 }
 
 :is(#experience-content, #education-content) h3 {
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     font-size: var(--font-size-large);
     line-height: var(--unit-size-3);
     text-transform: none;
