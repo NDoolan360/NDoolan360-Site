@@ -197,16 +197,6 @@ footer {
     color: var(--colour-on-primary);
 }
 
-/* Hide from DOM, will only show to screen readers */
-.sr-only {
-    position: absolute;
-    top: auto;
-    left: -10000px;
-    overflow: hidden;
-    width: 1px;
-    height: 1px;
-}
-
 /* =============== Nav and Main Resizing =============== */
 
 body {
