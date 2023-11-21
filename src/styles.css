@@ -150,7 +150,7 @@ span {
     width: 100%;
 }
 
-hgroup,
+.heading,
 footer {
     position: sticky;
     top: 0;
@@ -166,27 +166,27 @@ footer {
 }
 
 @media (width <= 960px) {
-    hgroup,
+    .heading,
     footer {
         top: calc(5.5 * var(--unit-size));
         padding-top: var(--unit-size-2);
     }
 
-    hgroup:not(:first-of-type) {
+    .heading:not(:first-of-type) {
         padding-top: var(--unit-size-2);
     }
 }
 
 /* Move top of sticky down for overflow of top nav increasing it's height */
 @media (width <= 792px) {
-    hgroup,
+    .heading,
     footer {
         top: calc(9.5 * var(--unit-size) - 1px);
     }
 }
 
 @media (width <= 484px) {
-    hgroup,
+    .heading,
     footer {
         top: calc(11.5 * var(--unit-size) - 1px);
     }
