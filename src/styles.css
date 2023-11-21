@@ -137,6 +137,11 @@ a:is(:hover, :focus-visible) {
     outline: auto;
 }
 
+[is='logo-link'] > svg {
+    width: var(--unit-size-2);
+    height: var(--unit-size-2);
+}
+
 hr {
     height: 1px;
     max-height: 1px;
