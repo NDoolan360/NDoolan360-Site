@@ -355,28 +355,6 @@ section > div {
     border-radius: var(--radius-full);
 }
 
-/* ================ Hero Section Styling =============== */
-
-#hero {
-    position: relative;
-    min-width: 100%;
-    height: 100vh;
-    object-fit: cover;
-}
-
-#hero > img {
-    position: absolute;
-    min-width: 100%;
-    height: 100vh;
-    object-fit: cover;
-}
-
-@media (width <= 960px) {
-    #hero {
-        height: calc(100vh - 5.5 * var(--unit-size));
-    }
-}
-
 /* ================ Bio Section Styling ================ */
 
 #bio-content {
