@@ -1,9 +1,11 @@
 import { describe, expect, test } from "bun:test";
+import { file } from "bun";
 import { scrapeBgg, scrapeCults3d, scrapeGithub, upgradeBggImage } from "projects";
-import { bggImageXml, bggProjects, cults3dProjects, githubProjects } from "./test.data";
 
 describe("Projects", () => {
-    test("Scrape Github data", () => {
+    test("Scrape Github data", async () => {
+        const githubProjects = await file("tests/data/githubProjects.html").text();
+
         const parser = new DOMParser();
         const githubMockDoc = parser.parseFromString(githubProjects, "text/html");
         const projects = scrapeGithub(githubMockDoc);
@@ -23,7 +25,9 @@ describe("Projects", () => {
         expect(projects[0].programmingLanguage?.style).toEqual("background-color: #3178c6");
     });
 
-    test("Scrape Cults3D data", () => {
+    test("Scrape Cults3D data", async () => {
+        const cults3dProjects = await file("tests/data/cults3dProjects.html").text();
+
         const parser = new DOMParser();
         const cults3dMockDoc = parser.parseFromString(cults3dProjects, "text/html");
         const projects = scrapeCults3d(cults3dMockDoc);
@@ -63,7 +67,9 @@ describe("Projects", () => {
         expect(projects[1].programmingLanguage).toBeUndefined();
     });
 
-    test("Scrape BGG data", () => {
+    test("Scrape BGG data", async () => {
+        const bggProjects = await file("tests/data/bggProjects.html").text();
+
         const parser = new DOMParser();
         const bggMockDoc = parser.parseFromString(bggProjects, "text/html");
         const projects = scrapeBgg(bggMockDoc);
@@ -82,6 +88,8 @@ describe("Projects", () => {
         expect(projects[0].image?.lowResSrc).toEqual(null);
         expect(projects[0].image?.alt).toEqual("Board Game: Cake Toppers");
         expect(projects[0].programmingLanguage).toBeUndefined();
+
+        const bggImageXml = await file("tests/data/bggImage.xml").text();
 
         const bggMockXmlDoc = parser.parseFromString(bggImageXml, "text/xml");
         upgradeBggImage(projects[0], bggMockXmlDoc);
