@@ -13,16 +13,18 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: Setup Bun
               uses: oven-sh/setup-bun@v1
+              with:
+                version: 1.0.14
 
             - name: Cache Node modules
-              uses: actions/cache@v2
+              uses: actions/cache@v3
               with:
                   path: node_modules
-                  key: bun-${{ hashFiles('**/package-lock.json') }}
+                  key: bun-${{ hashFiles('**/bun.lockb') }}
                   restore-keys: bun-
 
             - run: bun install
