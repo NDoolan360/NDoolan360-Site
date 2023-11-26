@@ -1,30 +1,26 @@
 {
-  "name": "ndoolan360-site",
-  "private": true,
-  "version": "1.1.0",
-  "type": "module",
-  "scripts": {
-    "dev": "bunx --bun vite",
-    "build": "bunx --bun vite build",
-    "check": "bunx @biomejs/biome check .",
-    "test": "vitest"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^1.3.3",
-    "@types/dompurify": "^3.0.5",
-    "autoprefixer": "^10.4.16",
-    "bun-types": "^1.0.14",
-    "jsdom": "^22.1.0",
-    "postcss": "^8.4.31",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.0",
-    "vitest": "^0.34.6"
-  },
-  "dependencies": {
-    "@vercel/analytics": "^1.1.1",
-    "dompurify": "^3.0.6"
-  },
-  "browserslist": [
-    "defaults"
-  ]
+    "name": "ndoolan360-site",
+    "private": true,
+    "version": "1.1.0",
+    "type": "module",
+    "scripts": {
+        "dev": "bunx --bun vite",
+        "build": "bunx --bun vite build",
+        "check": "bunx @biomejs/biome check ."
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^1.3.3",
+        "@happy-dom/global-registrator": "^12.10.3",
+        "@types/dompurify": "^3.0.5",
+        "@types/web": "^0.0.122",
+        "autoprefixer": "^10.4.16",
+        "bun-types": "^1.0.14",
+        "typescript": "^5.3.2",
+        "vite": "^5.0.2"
+    },
+    "dependencies": {
+        "@vercel/analytics": "^1.1.1",
+        "dompurify": "^3.0.6"
+    },
+    "browserslist": ["defaults"]
 }

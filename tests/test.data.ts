@@ -1,4 +1,4 @@
-export const githubTestListItems = `
+export const githubProjects = `
 <ol>
   <li>
     <div class="Box pinned-item-list-item fork">
@@ -47,7 +47,7 @@ export const githubTestListItems = `
 </ol>
 `;
 
-export const cults3dTestListItems = `
+export const cults3dProjects = `
 <div class="crea-group">
   <article class="crea">
     <div>
@@ -82,7 +82,7 @@ export const cults3dTestListItems = `
 </div>
 `;
 
-export const bggTestListItems = `
+export const bggProjects = `
 <table>
   <tbody>
     <tr>
@@ -112,7 +112,7 @@ export const bggTestListItems = `
 </table>
 `;
 
-export const bggXmlTestListItems = `
+export const bggImageXml = `
 <boardgames termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">
   <boardgame>
     <image>{Cake Toppers High-res Image Link}</image>

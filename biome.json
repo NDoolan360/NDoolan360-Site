@@ -10,10 +10,12 @@
     "linter": {
         "enabled": true,
         "rules": {
-            "recommended": true
+            "all": true
         }
     },
-    "files": {
-        "ignoreUnknown": true
+    "vcs": {
+        "clientKind": "git",
+        "enabled": true,
+        "useIgnoreFile": true
     }
 }

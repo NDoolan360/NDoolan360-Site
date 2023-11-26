@@ -1,8 +1,13 @@
-import DOMPurify from 'dompurify';
+import domPurify from "dompurify";
+import LogoLink from "./logo-link-web-component";
 
-type Site = 'cults3d' | 'github' | 'boardgamegeek';
+type Site = "cults3d" | "github" | "boardgamegeek";
 type Language = { name: string; style: string };
-type Image = { highResSrc: string | null; lowResSrc: string | null; alt: string | null };
+type Image = {
+    highResSrc: string | null;
+    lowResSrc: string | null;
+    alt: string | null;
+};
 
 type Project = {
     host?: Site;
@@ -14,7 +19,10 @@ type Project = {
 };
 
 // Fetch data from sites profile
-export const fetchData = async (site: string, parserType: DOMParserSupportedType = 'text/html'): Promise<Document> => {
+export const fetchData = async (
+    site: string,
+    parserType: DOMParserSupportedType = "text/html",
+): Promise<Document> => {
     const response = await fetch(site);
     const data = await response.text();
 
@@ -25,40 +33,56 @@ export const fetchData = async (site: string, parserType: DOMParserSupportedType
 export const scrapeGithub = (doc: Document): Project[] => {
     const githubProjects: Project[] = [];
 
-    const projectElements = doc.querySelectorAll('div[class*="Box pinned-item-list-item"]:not(div[class*="fork"])');
+    const projectElements = doc.querySelectorAll(
+        'div[class*="Box pinned-item-list-item"]:not(div[class*="fork"])',
+    );
 
     for (const projectElement of projectElements) {
-        const titleElement = projectElement.querySelector('span[class*="repo"]');
-        const descriptionElement = projectElement.querySelector('p[class*="pinned-item-desc"]');
+        const titleElement = projectElement.querySelector(
+            'span[class*="repo"]',
+        );
+        const descriptionElement = projectElement.querySelector(
+            'p[class*="pinned-item-desc"]',
+        );
         const urlElement = projectElement.querySelector('a[class*="Link"]');
-        const langaugeNameElement = projectElement.querySelector('span[itemprop*="programmingLanguage"]');
-        const langaugeColourElement = projectElement.querySelector('span[class*="repo-language-color"]');
+        const langaugeNameElement = projectElement.querySelector(
+            'span[itemprop*="programmingLanguage"]',
+        );
+        const langaugeColourElement = projectElement.querySelector(
+            'span[class*="repo-language-color"]',
+        );
 
-        let title, description, url, programmingLanguage;
+        let title;
+        let description;
+        let url;
+        let programmingLanguage;
+
         if (titleElement) {
             title = titleElement.innerHTML.trim();
         }
         if (descriptionElement) {
             description = descriptionElement.innerHTML.trim();
         }
-        if (urlElement) {
-            url = new URL(urlElement.getAttribute('href')!, 'https://github.com');
+        const href = urlElement?.getAttribute("href");
+        if (href) {
+            url = new URL(href, "https://github.com");
         }
-        if (langaugeNameElement?.innerHTML && langaugeColourElement?.getAttribute('style')) {
+        const languageStyle = langaugeColourElement?.getAttribute("style");
+        if (langaugeNameElement?.innerHTML && languageStyle) {
             programmingLanguage = {
                 name: langaugeNameElement.innerHTML,
-                style: langaugeColourElement.getAttribute('style')!,
+                style: languageStyle,
             };
         }
 
         githubProjects.push({
-            host: 'github',
+            host: "github",
             title,
             description,
             image: {
-                highResSrc: '/images/github.png',
+                highResSrc: "/images/github.png",
                 lowResSrc: null,
-                alt: 'Github Logo',
+                alt: "Github Logo",
             },
             url,
             programmingLanguage,
@@ -74,26 +98,38 @@ export const scrapeCults3d = (doc: Document): Project[] => {
     const projectElements = doc.querySelectorAll('article[class*="crea"]');
 
     for (const projectElement of projectElements) {
-        const titleElement = projectElement.querySelector('a[class*="drawer-contents"]');
-        const urlElement = projectElement.querySelector('a[class*="drawer-contents"]');
-        const imageElement = projectElement.querySelector('img[class*="painting-image"]');
+        const titleElement = projectElement.querySelector(
+            'a[class*="drawer-contents"]',
+        );
+        const urlElement = projectElement.querySelector(
+            'a[class*="drawer-contents"]',
+        );
+        const imageElement = projectElement.querySelector(
+            'img[class*="painting-image"]',
+        );
 
-        let title, url, image;
-        if (titleElement?.getAttribute('title')) {
-            title = titleElement.getAttribute('title')!.trim();
+        let title;
+        let url;
+        let image;
+
+        const titleValue = titleElement?.getAttribute("title");
+        if (titleValue) {
+            title = titleValue.trim();
         }
-        if (urlElement?.getAttribute('href')) {
-            url = new URL(urlElement.getAttribute('href')!, 'https://cults3d.com');
+        const href = urlElement?.getAttribute("href");
+        if (href) {
+            url = new URL(href, "https://cults3d.com");
         }
-        if (imageElement?.getAttribute('data-src')) {
-            let source = imageElement?.getAttribute('data-src');
+        const dataSrc = imageElement?.getAttribute("data-src");
+        if (dataSrc) {
+            let source = dataSrc;
             let sourceBackup = null;
 
             // extract full size file rather than thumbnail image if possible
             const regex = /https:\/\/files\.cults3d\.com[^'"]+/;
             const match = source?.match(regex);
 
-            if (match && match[0]) {
+            if (match?.[0]) {
                 sourceBackup = source;
                 source = match[0];
             }
@@ -101,11 +137,11 @@ export const scrapeCults3d = (doc: Document): Project[] => {
             image = {
                 highResSrc: source,
                 lowResSrc: sourceBackup,
-                alt: imageElement.getAttribute('alt'),
+                alt: imageElement?.getAttribute("alt"),
             } as Image;
         }
 
-        cults3dProjects.push({ host: 'cults3d', title, url, image });
+        cults3dProjects.push({ host: "cults3d", title, url, image });
     }
 
     return cults3dProjects;
@@ -116,123 +152,180 @@ export const scrapeBgg = (doc: Document): Project[] => {
     const projectElements = doc.querySelectorAll('tr[id*="row_"]');
 
     for (const projectElement of projectElements) {
-        const titleElement = projectElement.querySelector('td[class*="collection_objectname"] > div > a');
-        const descriptionElement = projectElement.querySelector('td[class*="collection_objectname"] > p');
-        const imageElement = projectElement.querySelector('td[class*="collection_thumbnail"] > a > img');
-        const urlElement = projectElement.querySelector('td[class*="collection_thumbnail"] > a');
+        const titleElement = projectElement.querySelector(
+            'td[class*="collection_objectname"] > div > a',
+        );
+        const descriptionElement = projectElement.querySelector(
+            'td[class*="collection_objectname"] > p',
+        );
+        const imageElement = projectElement.querySelector(
+            'td[class*="collection_thumbnail"] > a > img',
+        );
+        const urlElement = projectElement.querySelector(
+            'td[class*="collection_thumbnail"] > a',
+        );
 
-        let title, description, url, image;
+        let title;
+        let description;
+        let url;
+        let image;
+
         if (titleElement) {
             title = titleElement.innerHTML.trim();
         }
         if (descriptionElement) {
             description = descriptionElement.innerHTML.trim();
         }
-        if (urlElement?.getAttribute('href')) {
-            url = new URL(urlElement.getAttribute('href')!, 'https://boardgamegeek.com');
+        const href = urlElement?.getAttribute("href");
+        if (href) {
+            url = new URL(href, "https://boardgamegeek.com");
         }
-        if (imageElement?.getAttribute('src')) {
+        if (imageElement?.getAttribute("src")) {
             image = {
-                highResSrc: imageElement.getAttribute('src'),
+                highResSrc: imageElement.getAttribute("src"),
                 lowResSrc: null,
-                alt: imageElement.getAttribute('alt'),
+                alt: imageElement.getAttribute("alt"),
             } as Image;
         }
 
-        bggProjects.push({ host: 'boardgamegeek', title, description, url, image });
+        bggProjects.push({
+            host: "boardgamegeek",
+            title,
+            description,
+            url,
+            image,
+        });
     }
 
     return bggProjects;
 };
 
 export const upgradeBggImage = (project: Project, xmlDoc: XMLDocument) => {
-    const imageXmlElement = xmlDoc.getElementsByTagName('image').item(0);
+    const imageXmlElement = xmlDoc.getElementsByTagName("image").item(0);
     if (imageXmlElement && project.image) {
         project.image.lowResSrc = project.image.highResSrc;
         project.image.highResSrc = imageXmlElement.innerHTML;
     }
 };
 
-export const projectIntoTemplate = (project: Project, template: HTMLTemplateElement): DocumentFragment => {
+export const projectIntoTemplate = (
+    project: Project,
+    template: HTMLTemplateElement,
+): DocumentFragment => {
     const templateClone = document.importNode(template.content, true);
 
-    // Set project feature image
-    const imgElement = templateClone.querySelector<HTMLImageElement>('[class="card-feature-image"]')!;
-    imgElement.alt = DOMPurify.sanitize(project.image?.alt ?? project.title ?? 'Feature image');
-    // Chain loading of progressively higher res images (default -> srcBackup -> src)
-    imgElement.src = '/images/default.png';
-    if (project.image?.lowResSrc) {
-        imgElement.onload = () => {
-            imgElement.src = DOMPurify.sanitize(project.image!.lowResSrc!);
-            if (project.image!.highResSrc) {
-                imgElement.onload = () => {
-                    imgElement.src = DOMPurify.sanitize(project.image!.highResSrc!);
-                };
+    const setElementContent = <T extends Element, U>(
+        selector: string,
+        content: U | undefined,
+        setter: (element: T, content: U) => void,
+    ) => {
+        const element = templateClone.querySelector<T>(selector);
+        if (element) {
+            if (content) {
+                setter(element, content);
+            } else {
+                element.remove();
             }
-        };
-    } else if (project.image?.highResSrc) {
-        imgElement.onload = () => {
-            imgElement.src = DOMPurify.sanitize(project.image!.highResSrc!);
-        };
-    } else {
-        // Omit image if not present
-        imgElement.remove();
-    }
+        }
+    };
 
     // Set project title
-    const titleElement = templateClone.querySelector('[class="card-heading"]')!;
-    if (project.title) {
-        titleElement.textContent = DOMPurify.sanitize(project.title);
-    } else {
-        // Omit title if not present
-        titleElement.remove();
-    }
+    setElementContent(
+        '[class="card-heading"]',
+        project.title,
+        (element, content) => {
+            element.textContent = domPurify.sanitize(content);
+        },
+    );
 
     // Set project description
-    const descriptionElement = templateClone.querySelector('[class="card-description"]')!;
-    if (project.description) {
-        descriptionElement.textContent = DOMPurify.sanitize(project.description);
-    } else {
-        // Omit description if not present
-        descriptionElement.remove();
-    }
+    setElementContent(
+        '[class="card-description"]',
+        project.description,
+        (element, content) => {
+            element.textContent = domPurify.sanitize(content);
+        },
+    );
 
     // Set project URL
-    const linkElement = templateClone.querySelector<HTMLAnchorElement>('[class*="card-link"]')!;
-    if (project.url) {
-        linkElement.href = DOMPurify.sanitize(project.url.href);
-    } else {
-        // Omit link if not present
-        linkElement.remove();
-    }
+    setElementContent<HTMLLinkElement, string>(
+        '[class="card-link"]',
+        project.url?.href,
+        (element, content) => {
+            element.href = domPurify.sanitize(content);
+        },
+    );
 
     // Set project language
-    const languageElement = templateClone.querySelector('[class="card-language-colour"]')!;
-    const languageTextElement = templateClone.querySelector('[class="card-language"]')!;
-    if (project.programmingLanguage && project.programmingLanguage.name) {
-        languageElement.setAttribute('style', DOMPurify.sanitize(project.programmingLanguage.style));
-        languageTextElement.textContent = DOMPurify.sanitize(project.programmingLanguage.name);
-    } else {
-        // Omit language if not present
-        languageElement.remove();
-        languageTextElement.remove();
-    }
+    setElementContent<Element, Language>(
+        '[class="card-language"]',
+        project.programmingLanguage,
+        (element, content) => {
+            element.textContent = domPurify.sanitize(content.name);
+        },
+    );
 
-    // Set logo
-    const logoElement = templateClone.querySelector<LogoLink>('[class*="card-logo"]')!;
-    if (project.host && project.url) {
-        const host = DOMPurify.sanitize(project.host);
-        templateClone.firstElementChild?.classList.add(host);
-        logoElement.setAttribute('href', project.url.toString());
-        logoElement.innerHTML = host;
-    } else {
-        // Omit logo if not present
-        logoElement.remove();
-    }
+    // Set project language colour
+    setElementContent<Element, Language>(
+        '[class="card-language-colour"]',
+        project.programmingLanguage,
+        (element, content) => {
+            element.setAttribute("style", domPurify.sanitize(content.style));
+        },
+    );
+
+    // Set logo text
+    setElementContent<LogoLink, string>(
+        '[class*="card-logo"]',
+        project.host,
+        (element, content) => {
+            element.innerHTML = domPurify.sanitize(content);
+        },
+    );
+    // Set logo link
+    setElementContent<LogoLink, string>(
+        '[class*="card-logo"]',
+        project.url?.href,
+        (element, content) => {
+            element.setAttribute("href", domPurify.sanitize(content));
+        },
+    );
+
+    // Set project feature image
+    setElementContent<HTMLImageElement, Image>(
+        '[class="card-feature-image"]',
+        project.image,
+        (element, content) => {
+            element.alt = content.alt ?? "Feature image";
+
+            // Chain loading of progressively higher res images (default -> srcBackup -> src)
+            element.src = "/images/default.png";
+            const lowRes = content.lowResSrc;
+            const highRes = content.highResSrc;
+            if (lowRes) {
+                element.onload = () => {
+                    element.src = domPurify.sanitize(lowRes);
+                    if (highRes) {
+                        element.onload = () => {
+                            element.src = domPurify.sanitize(highRes);
+                        };
+                    }
+                };
+            } else if (highRes) {
+                element.onload = () => {
+                    element.src = domPurify.sanitize(highRes);
+                };
+            }
+        },
+    );
+
     return templateClone;
 };
 
-export const appendRandom = async (parent: HTMLElement, ...elements: DocumentFragment[]) => {
+export const appendRandom = async (
+    parent: HTMLElement,
+    ...elements: DocumentFragment[]
+) => {
     for (const element of elements) {
         const children = parent.children;
         const randomIndex = Math.floor(Math.random() * (children.length + 1));
@@ -247,41 +340,56 @@ export const appendRandom = async (parent: HTMLElement, ...elements: DocumentFra
     }
 };
 
-export const loadProjects = async () => {
+const loadProjects = async () => {
     // Create project-gallery loader
-    const loader = document.createElement('span');
-    loader.classList.add('loader');
-    document.getElementById('projects')?.append(loader);
+    const loader = document.createElement("span");
+    loader.classList.add("loader");
+    document.getElementById("projects")?.append(loader);
 
     // Load items into gallery
-    const gallery = document.getElementById('project-gallery')!;
-    const template = (document.getElementById('project-template') as HTMLTemplateElement)!;
+    const gallery = document.getElementById("project-gallery");
+    const template = document.getElementById("project-template") as
+        | HTMLTemplateElement
+        | undefined;
 
-    const githubPage = await fetchData('/proxy/github');
-    const githubProjects = scrapeGithub(githubPage).map((p) => projectIntoTemplate(p, template));
-    await appendRandom(gallery, ...githubProjects);
+    if (gallery && template) {
+        const githubPage = await fetchData("/proxy/github");
+        const githubProjects = scrapeGithub(githubPage).map((p) =>
+            projectIntoTemplate(p, template),
+        );
+        await appendRandom(gallery, ...githubProjects);
 
-    const bggPage = await fetchData('/proxy/boardgamegeek');
-    const bggRawProjects = scrapeBgg(bggPage);
+        const bggPage = await fetchData("/proxy/boardgamegeek");
+        const bggRawProjects = scrapeBgg(bggPage);
 
-    // Get higher resolution image from bgg xmlapi
-    for (const project of bggRawProjects) {
-        const id = project.url
-            ?.toString()
-            ?.split('/')
-            .find((v) => v.match(/\d+/g));
-        const gameXml = await fetchData(`/xmlapi/boardgamegeek/${id}`, 'text/xml');
-        upgradeBggImage(project, gameXml);
+        // Get higher resolution image from bgg xmlapi
+        for (const project of bggRawProjects) {
+            const id = project.url
+                ?.toString()
+                ?.split("/")
+                .find((v) => v.match(/\d+/g));
+            const gameXml = await fetchData(
+                `/xmlapi/boardgamegeek/${id}`,
+                "text/xml",
+            );
+            upgradeBggImage(project, gameXml);
+        }
+
+        const bggProjects = bggRawProjects.map((p) =>
+            projectIntoTemplate(p, template),
+        );
+
+        await appendRandom(gallery, ...bggProjects);
+
+        const cults3dPage = await fetchData("/proxy/cults3d");
+        const cults3dProjects = scrapeCults3d(cults3dPage).map((p) =>
+            projectIntoTemplate(p, template),
+        );
+        await appendRandom(gallery, ...cults3dProjects);
     }
-
-    const bggProjects = bggRawProjects.map((p) => projectIntoTemplate(p, template));
-
-    await appendRandom(gallery, ...bggProjects);
-
-    const cults3dPage = await fetchData('/proxy/cults3d');
-    const cults3dProjects = scrapeCults3d(cults3dPage).map((p) => projectIntoTemplate(p, template));
-    await appendRandom(gallery, ...cults3dProjects);
 
     // remove loader
     loader.remove();
 };
+
+loadProjects();

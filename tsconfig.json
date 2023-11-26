@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022", "dom", "dom.iterable"],
     "skipLibCheck": true,
-    "types": ["bun-types"],
+    "types": ["web", "bun-types", "vite/client"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -18,7 +18,9 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "include": ["src"]
+    "noFallthroughCasesInSwitch": true,
+
+    /* Path resolution */
+    "baseUrl": "./src",
+  }
 }
