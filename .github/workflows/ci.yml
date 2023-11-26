@@ -8,7 +8,7 @@ on:
             - master
 
 jobs:
-    node:
+    bun:
         runs-on: ubuntu-latest
 
         steps:
@@ -22,8 +22,8 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: node_modules
-                  key: bun-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: bun-${{ runner.os }}-
+                  key: bun-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: bun-
 
             - run: bun install
             - run: bun check
