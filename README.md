@@ -3,7 +3,7 @@
 ![GitHub Workflow Status (Continuous Integration)](https://img.shields.io/github/actions/workflow/status/NDoolan360/NDoolan360-Site/ci.yml?logo=github&logoColor=white&label=Continuous%20Integration)
 ![GitHub deployments](https://img.shields.io/github/deployments/NDoolan360/NDoolan360-Site/production?logo=vercel&logoColor=white&label=Deployment)
 
-The source code for my first personal website, written with HTML, CSS and TS, built with Vite, tested with Vitest, and deployed with Vercel.
+The source code for my first personal website, written with HTML, CSS and TS, built with Bun and Vite, tested with Bun, linted and formatted with BiomeJS, and deployed with Vercel.
 
 ## External Resources
 
