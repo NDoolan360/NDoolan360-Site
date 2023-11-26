@@ -6,4 +6,3 @@ const copyright = document.getElementById("copyright");
 if (copyright) {
     copyright.innerHTML = replaceWithCurrentYear(copyright.innerHTML, "{current year}");
 }
- 

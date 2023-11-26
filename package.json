@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "bunx --bun vite",
-        "build": "bunx --bun vite build",
+        "build": "vite build",
         "check": "bunx @biomejs/biome check ."
     },
     "devDependencies": {
