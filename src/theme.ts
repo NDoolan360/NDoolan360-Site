@@ -9,9 +9,7 @@ if (storageTheme) {
     theme = storageTheme;
     document.firstElementChild?.setAttribute("data-theme", theme);
 } else if (window.matchMedia) {
-    theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+    theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     document.firstElementChild?.setAttribute("data-theme", theme);
 }
 
@@ -30,9 +28,7 @@ export const setPreference = (theme: string) => {
 const reflectPreference = (theme: string) => {
     document.firstElementChild?.setAttribute("data-theme", theme);
     document.querySelector("#theme-toggle")?.setAttribute("aria-label", theme);
-    document
-        .querySelector('link[rel="icon"]')
-        ?.setAttribute("href", `/images/icon-${theme}.png`);
+    document.querySelector('link[rel="icon"]')?.setAttribute("href", `/images/icon-${theme}.png`);
 };
 
 // set early so no page flashes / CSS is made aware

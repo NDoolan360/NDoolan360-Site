@@ -28,8 +28,7 @@ export default defineConfig({
             "/xmlapi/boardgamegeek/": {
                 target: "https://api.geekdo.com/xmlapi/boardgame/",
                 changeOrigin: true,
-                rewrite: (path) =>
-                    path.replace(/^\/xmlapi\/boardgamegeek\//, ""),
+                rewrite: (path) => path.replace(/^\/xmlapi\/boardgamegeek\//, ""),
             },
         },
     },

@@ -38,12 +38,8 @@ export const scrapeGithub = (doc: Document): Project[] => {
     );
 
     for (const projectElement of projectElements) {
-        const titleElement = projectElement.querySelector(
-            'span[class*="repo"]',
-        );
-        const descriptionElement = projectElement.querySelector(
-            'p[class*="pinned-item-desc"]',
-        );
+        const titleElement = projectElement.querySelector('span[class*="repo"]');
+        const descriptionElement = projectElement.querySelector('p[class*="pinned-item-desc"]');
         const urlElement = projectElement.querySelector('a[class*="Link"]');
         const langaugeNameElement = projectElement.querySelector(
             'span[itemprop*="programmingLanguage"]',
@@ -98,15 +94,9 @@ export const scrapeCults3d = (doc: Document): Project[] => {
     const projectElements = doc.querySelectorAll('article[class*="crea"]');
 
     for (const projectElement of projectElements) {
-        const titleElement = projectElement.querySelector(
-            'a[class*="drawer-contents"]',
-        );
-        const urlElement = projectElement.querySelector(
-            'a[class*="drawer-contents"]',
-        );
-        const imageElement = projectElement.querySelector(
-            'img[class*="painting-image"]',
-        );
+        const titleElement = projectElement.querySelector('a[class*="drawer-contents"]');
+        const urlElement = projectElement.querySelector('a[class*="drawer-contents"]');
+        const imageElement = projectElement.querySelector('img[class*="painting-image"]');
 
         let title;
         let url;
@@ -161,9 +151,7 @@ export const scrapeBgg = (doc: Document): Project[] => {
         const imageElement = projectElement.querySelector(
             'td[class*="collection_thumbnail"] > a > img',
         );
-        const urlElement = projectElement.querySelector(
-            'td[class*="collection_thumbnail"] > a',
-        );
+        const urlElement = projectElement.querySelector('td[class*="collection_thumbnail"] > a');
 
         let title;
         let description;
@@ -230,22 +218,14 @@ export const projectIntoTemplate = (
     };
 
     // Set project title
-    setElementContent(
-        '[class="card-heading"]',
-        project.title,
-        (element, content) => {
-            element.textContent = domPurify.sanitize(content);
-        },
-    );
+    setElementContent('[class="card-heading"]', project.title, (element, content) => {
+        element.textContent = domPurify.sanitize(content);
+    });
 
     // Set project description
-    setElementContent(
-        '[class="card-description"]',
-        project.description,
-        (element, content) => {
-            element.textContent = domPurify.sanitize(content);
-        },
-    );
+    setElementContent('[class="card-description"]', project.description, (element, content) => {
+        element.textContent = domPurify.sanitize(content);
+    });
 
     // Set project URL
     setElementContent<HTMLLinkElement, string>(
@@ -322,10 +302,7 @@ export const projectIntoTemplate = (
     return templateClone;
 };
 
-export const appendRandom = async (
-    parent: HTMLElement,
-    ...elements: DocumentFragment[]
-) => {
+export const appendRandom = async (parent: HTMLElement, ...elements: DocumentFragment[]) => {
     for (const element of elements) {
         const children = parent.children;
         const randomIndex = Math.floor(Math.random() * (children.length + 1));
@@ -348,9 +325,7 @@ const loadProjects = async () => {
 
     // Load items into gallery
     const gallery = document.getElementById("project-gallery");
-    const template = document.getElementById("project-template") as
-        | HTMLTemplateElement
-        | undefined;
+    const template = document.getElementById("project-template") as HTMLTemplateElement | undefined;
 
     if (gallery && template) {
         const githubPage = await fetchData("/proxy/github");
@@ -368,16 +343,11 @@ const loadProjects = async () => {
                 ?.toString()
                 ?.split("/")
                 .find((v) => v.match(/\d+/g));
-            const gameXml = await fetchData(
-                `/xmlapi/boardgamegeek/${id}`,
-                "text/xml",
-            );
+            const gameXml = await fetchData(`/xmlapi/boardgamegeek/${id}`, "text/xml");
             upgradeBggImage(project, gameXml);
         }
 
-        const bggProjects = bggRawProjects.map((p) =>
-            projectIntoTemplate(p, template),
-        );
+        const bggProjects = bggRawProjects.map((p) => projectIntoTemplate(p, template));
 
         await appendRandom(gallery, ...bggProjects);
 

@@ -1,14 +1,9 @@
-export const replaceWithCurrentYear = (
-    input: string,
-    match: string,
-): string => {
+export const replaceWithCurrentYear = (input: string, match: string): string => {
     return input.replace(match, new Date().getFullYear().toString());
 };
 
 const copyright = document.getElementById("copyright");
 if (copyright) {
-    copyright.innerHTML = replaceWithCurrentYear(
-        copyright.innerHTML,
-        "{current year}",
-    );
+    copyright.innerHTML = replaceWithCurrentYear(copyright.innerHTML, "{current year}");
 }
+ 

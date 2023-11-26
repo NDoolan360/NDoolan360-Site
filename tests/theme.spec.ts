@@ -7,17 +7,13 @@ describe("Theme", () => {
         onClick();
 
         expect(localStorage.getItem("theme")).toEqual("dark");
-        expect(document.firstElementChild?.getAttribute("data-theme")).toEqual(
-            "dark",
-        );
+        expect(document.firstElementChild?.getAttribute("data-theme")).toEqual("dark");
     });
     test("Toggle Theme (dark -> light)", () => {
         setPreference("dark");
         onClick();
 
         expect(localStorage.getItem("theme")).toEqual("light");
-        expect(document.firstElementChild?.getAttribute("data-theme")).toEqual(
-            "light",
-        );
+        expect(document.firstElementChild?.getAttribute("data-theme")).toEqual("light");
     });
 });
