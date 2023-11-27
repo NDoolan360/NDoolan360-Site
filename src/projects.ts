@@ -1,3 +1,4 @@
+import { BunFile, file } from "bun";
 import domPurify from "dompurify";
 import LogoLink from "./logo-link-web-component";
 
@@ -20,12 +21,21 @@ type Project = {
 
 // Fetch data from sites profile
 export const fetchData = async (
-    site: string,
+    source: string,
     parserType: DOMParserSupportedType = "text/html",
 ): Promise<Document> => {
-    const response = await fetch(site);
-    const data = await response.text();
+    let response: Response | BunFile;
 
+    // Check if the source is a URL
+    if (source.startsWith("http://") || source.startsWith("https://")) {
+        response = await fetch(source);
+    } else {
+        // Read data from local file
+        response = file(source);
+    }
+
+    const data = await response.text();
+    // Parse the data using DOMParser
     const parser = new DOMParser();
     return parser.parseFromString(data, parserType);
 };
@@ -218,27 +228,27 @@ export const projectIntoTemplate = (
     };
 
     // Set project title
-    setElementContent('[class="card-heading"]', project.title, (element, content) => {
+    setElementContent('[class*="card-heading"]', project.title, (element, content) => {
         element.textContent = domPurify.sanitize(content);
     });
 
     // Set project description
-    setElementContent('[class="card-description"]', project.description, (element, content) => {
+    setElementContent('[class*="card-description"]', project.description, (element, content) => {
         element.textContent = domPurify.sanitize(content);
     });
 
     // Set project URL
-    setElementContent<HTMLLinkElement, string>(
-        '[class="card-link"]',
-        project.url?.href,
+    setElementContent<HTMLLinkElement, URL>(
+        '[class*="card-link"]',
+        project.url,
         (element, content) => {
-            element.href = domPurify.sanitize(content);
+            element.href = domPurify.sanitize(content.href);
         },
     );
 
     // Set project language
     setElementContent<Element, Language>(
-        '[class="card-language"]',
+        '[class*="card-language-name"]',
         project.programmingLanguage,
         (element, content) => {
             element.textContent = domPurify.sanitize(content.name);
@@ -247,7 +257,7 @@ export const projectIntoTemplate = (
 
     // Set project language colour
     setElementContent<Element, Language>(
-        '[class="card-language-colour"]',
+        '[class*="card-language-colour"]',
         project.programmingLanguage,
         (element, content) => {
             element.setAttribute("style", domPurify.sanitize(content.style));
@@ -263,17 +273,13 @@ export const projectIntoTemplate = (
         },
     );
     // Set logo link
-    setElementContent<LogoLink, string>(
-        '[class*="card-logo"]',
-        project.url?.href,
-        (element, content) => {
-            element.setAttribute("href", domPurify.sanitize(content));
-        },
-    );
+    setElementContent<LogoLink, URL>('[class*="card-logo"]', project.url, (element, content) => {
+        element.setAttribute("href", domPurify.sanitize(content.href));
+    });
 
     // Set project feature image
     setElementContent<HTMLImageElement, Image>(
-        '[class="card-feature-image"]',
+        '[class*="card-feature-image"]',
         project.image,
         (element, content) => {
             element.alt = content.alt ?? "Feature image";
