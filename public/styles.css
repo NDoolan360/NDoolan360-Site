@@ -1,5 +1,5 @@
 @font-face {
-    display: swap;
+    font-display: swap;
     font-family: 'Oxygen Mono';
     font-style: normal;
     font-weight: 400;
@@ -8,7 +8,7 @@
 }
 
 @font-face {
-    display: swap;
+    font-display: swap;
     font-family: 'Josefin Sans';
     font-style: normal;
     font-weight: 400;

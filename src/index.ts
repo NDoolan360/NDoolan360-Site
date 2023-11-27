@@ -8,7 +8,6 @@ import {
     scrapeGithub,
     upgradeBggImage,
 } from "./projects";
-import "./styles.css";
 
 // Insert Analytics
 inject();
