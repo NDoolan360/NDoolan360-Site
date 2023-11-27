@@ -9,7 +9,7 @@ export const fetchData = async (
 ): Promise<Document> => {
     let data;
 
-    if (source.startsWith("http://") || source.startsWith("https://")) {
+    if (source.startsWith("/proxy") || source.startsWith("http://") || source.startsWith("https://")) {
         const response = await fetch(source);
         data = await response.text();
     } else {

@@ -25,10 +25,10 @@ export default defineConfig({
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/proxy\/boardgamegeek/, ""),
             },
-            "/xmlapi/boardgamegeek/": {
+            "/proxy/xmlapi/boardgamegeek/": {
                 target: "https://api.geekdo.com/xmlapi/boardgame/",
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/xmlapi\/boardgamegeek\//, ""),
+                rewrite: (path) => path.replace(/^\/proxy\/xmlapi\/boardgamegeek\//, ""),
             },
         },
     },

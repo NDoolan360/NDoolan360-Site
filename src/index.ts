@@ -43,7 +43,7 @@ const loadProjects = async () => {
                 ?.toString()
                 ?.split("/")
                 .find((v) => v.match(/\d+/g));
-            const gameXml = await fetchData(`/xmlapi/boardgamegeek/${id}`, "text/xml");
+            const gameXml = await fetchData(`/proxy/xmlapi/boardgamegeek/${id}`, "text/xml");
             upgradeBggImage(project, gameXml);
         }
 
