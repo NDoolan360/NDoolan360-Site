@@ -1,6 +1,7 @@
+import { file } from "bun";
 import { describe, expect, test } from "bun:test";
+import { fetchData } from "utils";
 import {
-    fetchData,
     projectIntoTemplate,
     scrapeBgg,
     scrapeCults3d,
@@ -10,13 +11,16 @@ import {
 
 describe("Projects", () => {
     test("Github project into Template", async () => {
-        const indexMockDoc = await fetchData("index.html");
-        const githubMockDoc = await fetchData("tests/data/githubProjects.html");
+        const indexData = await file("index.html").text();
+        const indexMockDoc = await fetchData(indexData);
+        const githubMockData = await file("tests/data/githubProjects.html").text();
+        const githubMockDoc = await fetchData(githubMockData);
 
         const template = indexMockDoc.getElementById("project-template") as HTMLTemplateElement;
         const githubProjects = scrapeGithub(githubMockDoc);
         const project = githubProjects.at(0);
 
+        expect(project).not.toBeUndefined();
         if (project) {
             expect(template).not.toBeUndefined();
             const fragment = projectIntoTemplate(project, template);
@@ -53,13 +57,16 @@ describe("Projects", () => {
     });
 
     test("Cults3d project into Template", async () => {
-        const indexMockDoc = await fetchData("index.html");
-        const cults3dMockDoc = await fetchData("tests/data/cults3dProjects.html");
+        const indexData = await file("index.html").text();
+        const indexMockDoc = await fetchData(indexData);
+        const cults3dMockData = await file("tests/data/cults3dProjects.html").text();
+        const cults3dMockDoc = await fetchData(cults3dMockData);
 
         const template = indexMockDoc.getElementById("project-template") as HTMLTemplateElement;
         const cults3dProjects = scrapeCults3d(cults3dMockDoc);
         const project = cults3dProjects.at(0);
 
+        expect(project).not.toBeUndefined();
         if (project) {
             expect(template).not.toBeUndefined();
             const fragment = projectIntoTemplate(project, template);
@@ -111,14 +118,18 @@ describe("Projects", () => {
     });
 
     test("Bgg project into Template", async () => {
-        const indexMockDoc = await fetchData("index.html");
-        const bggMockDoc = await fetchData("tests/data/bggProjects.html");
-        const bggMockXml = await fetchData("tests/data/bggImage.xml", "text/xml");
+        const indexData = await file("index.html").text();
+        const indexMockDoc = await fetchData(indexData);
+        const bggMockData = await file("tests/data/bggProjects.html").text();
+        const bggMockDoc = await fetchData(bggMockData);
+        const bggMockXmlData = await file("tests/data/bggImage.xml").text();
+        const bggMockXml = await fetchData(bggMockXmlData, "text/xml");
 
         const template = indexMockDoc.getElementById("project-template") as HTMLTemplateElement;
         const bggProjects = scrapeBgg(bggMockDoc);
         const project = bggProjects.at(0);
 
+        expect(project).not.toBeUndefined();
         if (project) {
             upgradeBggImage(project, bggMockXml);
 

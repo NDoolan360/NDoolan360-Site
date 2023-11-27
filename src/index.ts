@@ -1,13 +1,12 @@
 import { inject } from "@vercel/analytics";
-import { replaceWithCurrentYear } from "./copyright";
 import {
-    fetchData,
     projectIntoTemplate,
     scrapeBgg,
     scrapeCults3d,
     scrapeGithub,
     upgradeBggImage,
 } from "./projects";
+import { fetchData, replaceWithCurrentYear } from "./utils";
 
 // Insert Analytics
 inject();

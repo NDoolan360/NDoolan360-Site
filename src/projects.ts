@@ -1,4 +1,3 @@
-import { BunFile, file } from "bun";
 import domPurify from "dompurify";
 import LogoLink from "./logo-link-web-component";
 
@@ -17,27 +16,6 @@ type Project = {
     url?: URL;
     image?: Image;
     programmingLanguage?: Language;
-};
-
-// Fetch data from sites profile
-export const fetchData = async (
-    source: string,
-    parserType: DOMParserSupportedType = "text/html",
-): Promise<Document> => {
-    let response: Response | BunFile;
-
-    // Check if the source is a URL
-    if (source.startsWith("http://") || source.startsWith("https://")) {
-        response = await fetch(source);
-    } else {
-        // Read data from local file
-        response = file(source);
-    }
-
-    const data = await response.text();
-    // Parse the data using DOMParser
-    const parser = new DOMParser();
-    return parser.parseFromString(data, parserType);
 };
 
 export const scrapeGithub = (doc: Document): Project[] => {

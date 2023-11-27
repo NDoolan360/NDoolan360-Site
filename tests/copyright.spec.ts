@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { replaceWithCurrentYear } from "copyright";
+import { replaceWithCurrentYear } from "utils";
 
 describe("Copyright", () => {
     test("replaceWithCurrentYear", () => {
