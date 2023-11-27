@@ -64,7 +64,7 @@ export const scrapeGithub = (doc: Document): Project[] => {
             title,
             description,
             image: {
-                highResSrc: "/images/github.png",
+                highResSrc: "/images/github.webp",
                 lowResSrc: null,
                 alt: "Github Logo",
             },
@@ -263,7 +263,7 @@ export const projectIntoTemplate = (
             element.alt = content.alt ?? "Feature image";
 
             // Chain loading of progressively higher res images (default -> srcBackup -> src)
-            element.src = "/images/default.png";
+            element.src = "/images/default.webp";
             const lowRes = content.lowResSrc;
             const highRes = content.highResSrc;
             if (lowRes) {

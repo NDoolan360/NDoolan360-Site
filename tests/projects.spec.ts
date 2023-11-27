@@ -1,6 +1,5 @@
-import { file } from "bun";
 import { describe, expect, test } from "bun:test";
-import { fetchData } from "utils";
+import { file } from "bun";
 import {
     projectIntoTemplate,
     scrapeBgg,
@@ -8,6 +7,7 @@ import {
     scrapeGithub,
     upgradeBggImage,
 } from "projects";
+import { fetchData } from "utils";
 
 describe("Projects", () => {
     test("Github project into Template", async () => {
@@ -52,7 +52,7 @@ describe("Projects", () => {
             ).toBe("github");
             expect(
                 fragment.querySelector<HTMLImageElement>('[class*="card-feature-image"]')?.src,
-            ).toBe("/images/default.png");
+            ).toBe("/images/default.webp");
         }
     });
 
@@ -101,7 +101,7 @@ describe("Projects", () => {
             );
             expect(featureImage).not.toBeUndefined();
             if (featureImage) {
-                expect(featureImage.src).toBe("/images/default.png");
+                expect(featureImage.src).toBe("/images/default.webp");
                 if (featureImage.onload) {
                     featureImage.onload(new Event("load"));
                     expect(featureImage.src).toBe(
@@ -166,7 +166,7 @@ describe("Projects", () => {
             );
             expect(featureImage).not.toBeUndefined();
             if (featureImage) {
-                expect(featureImage.src).toBe("/images/default.png");
+                expect(featureImage.src).toBe("/images/default.webp");
             }
 
             if (featureImage?.onload) {
