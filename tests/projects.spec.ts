@@ -97,4 +97,9 @@ describe("Projects", () => {
         expect(projects[0].image?.highResSrc).toEqual("{Cake Toppers High-res Image Link}");
         expect(projects[0].image?.lowResSrc).toEqual("{Cake Toppers Image Link}");
     });
+
+    test.todo("Insert project into Template", () => {
+        // TODO
+        // projectIntoTemplate(project, template)
+    });
 });
