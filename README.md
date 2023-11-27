@@ -18,9 +18,9 @@ The source code for my first personal website, written with HTML, CSS and TS, bu
 
 ### Components
 
--   [Theme Switch](/src/theme.ts): web.dev - [Dark and Light Theme Switch](https://web.dev/patterns/theming/theme-switch)
+-   [Theme Switch](/src/theme.ts) - [web.dev](https://web.dev/patterns/theming/theme-switch)
 
 ### Fonts
 
--   [JosefinSans.woff2](/public/fonts): Copyright 2010, [The Josefin Sans Project Authors](https://github.com/ThomasJockin/JosefinSansFont-master)
--   [OxygenMono.woff2](/public/fonts): Copyright 2012, [Vernon Adams](vern@newtypography.co.uk)
+-   [JosefinSans.woff2](/public/fonts) - [The Josefin Sans Project Authors](https://github.com/ThomasJockin/JosefinSansFont-master) &copy; 2010
+-   [OxygenMono.woff2](/public/fonts) - [Vernon Adams](vern@newtypography.co.uk) &copy; 2012
