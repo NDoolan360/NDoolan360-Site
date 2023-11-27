@@ -2,14 +2,14 @@ import "./theme-switch.css";
 
 // Below script Adapted from:
 // https://web.dev/patterns/theming/theme-switch/#js
-let theme = "light";
+let theme = "dark";
 
 const storageTheme = localStorage.getItem("theme");
 if (storageTheme) {
     theme = storageTheme;
     document.firstElementChild?.setAttribute("data-theme", theme);
 } else if (window.matchMedia) {
-    theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    theme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
     document.firstElementChild?.setAttribute("data-theme", theme);
 }
 
@@ -54,9 +54,9 @@ window.onload = () => {
 // sync with system changes
 if (window.matchMedia) {
     window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", ({ matches: isDark }) => {
-            theme = isDark ? "dark" : "light";
+        .matchMedia("(prefers-color-scheme: light)")
+        .addEventListener("change", ({ matches: isLight }) => {
+            theme = isLight ? "light" : "dark";
             setPreference(theme);
         });
 }

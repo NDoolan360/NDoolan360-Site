@@ -34,10 +34,10 @@
     --radius-full: 100rem;
     --colour-primary: #4fffd3;
     --colour-on-primary: #000;
-    --colour-background: #fff;
-    --colour-text: #104537;
-    --colour-border: #29695940;
-    --colour-github: #000;
+    --colour-background: #182825;
+    --colour-text: #d7f2ec;
+    --colour-border: #d7f2ec40;
+    --colour-github: #fff;
     --colour-linkedin: #0077b5;
     --colour-facebook: #0866ff;
     --colour-discord: #5865f2;
@@ -48,12 +48,13 @@
     --colour-melbourneuniversity: #040c44;
 }
 
-/* dark theme */
-[data-theme='dark'] {
-    --colour-background: #182825;
-    --colour-text: #d7f2ec;
-    --colour-border: #d7f2ec40;
-    --colour-github: #fff;
+/* light theme */
+[data-theme='light'] {
+    color-scheme: light;
+    --colour-background: #fff;
+    --colour-text: #104537;
+    --colour-border: #29695940;
+    --colour-github: #000;
 }
 
 /* ===================== CSS Reset ===================== */
