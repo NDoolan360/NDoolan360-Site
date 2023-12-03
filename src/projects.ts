@@ -1,8 +1,9 @@
 import domPurify from "dompurify";
-import LogoLink from "./logo-link-web-component";
+import * as githubColorsJson from "./github-colors.json";
+import { Logo } from "./logo-web-component";
 
-type Site = "cults3d" | "github" | "boardgamegeek";
-type Language = { name: string; style: string };
+type Site = "Cults 3D" | "Github" | "Board Game Geek";
+type Language = { name: string; color: string };
 type Image = {
     highResSrc: string | null;
     lowResSrc: string | null;
@@ -16,64 +17,36 @@ type Project = {
     url?: URL;
     image?: Image;
     programmingLanguage?: Language;
+    chips?: string[];
 };
 
-export const scrapeGithub = (doc: Document): Project[] => {
-    const githubProjects: Project[] = [];
+export type GithubRepo = {
+    name: string;
+    description: string;
+    fork: boolean;
+    language: string;
+    topics: string[];
+    // biome-ignore lint/style/useNamingConvention: External API naming convention
+    html_url: string;
+};
 
-    const projectElements = doc.querySelectorAll(
-        'div[class*="Box pinned-item-list-item"]:not(div[class*="fork"])',
-    );
-
-    for (const projectElement of projectElements) {
-        const titleElement = projectElement.querySelector('span[class*="repo"]');
-        const descriptionElement = projectElement.querySelector('p[class*="pinned-item-desc"]');
-        const urlElement = projectElement.querySelector('a[class*="Link"]');
-        const langaugeNameElement = projectElement.querySelector(
-            'span[itemprop*="programmingLanguage"]',
-        );
-        const langaugeColourElement = projectElement.querySelector(
-            'span[class*="repo-language-color"]',
-        );
-
-        let title;
-        let description;
-        let url;
-        let programmingLanguage;
-
-        if (titleElement) {
-            title = titleElement.innerHTML.trim();
-        }
-        if (descriptionElement) {
-            description = descriptionElement.innerHTML.trim();
-        }
-        const href = urlElement?.getAttribute("href");
-        if (href) {
-            url = new URL(href, "https://github.com");
-        }
-        const languageStyle = langaugeColourElement?.getAttribute("style");
-        if (langaugeNameElement?.innerHTML && languageStyle) {
-            programmingLanguage = {
-                name: langaugeNameElement.innerHTML,
-                style: languageStyle,
+export const githubRepoToProject = (data: GithubRepo[]): Project[] => {
+    const githubColors: { [k: string]: { color: string } | undefined } = githubColorsJson;
+    return data
+        .filter((r) => !r.fork && r.topics.length > 0)
+        .map((r): Project => {
+            return {
+                host: "Github",
+                description: r.description,
+                title: r.name.replace(/[\_\-\.]/, " "),
+                programmingLanguage: {
+                    name: r.language,
+                    color: githubColors[r.language]?.color ?? "",
+                },
+                url: new URL(r.html_url),
+                chips: r.topics,
             };
-        }
-
-        githubProjects.push({
-            host: "github",
-            title,
-            description,
-            image: {
-                highResSrc: "/images/github.webp",
-                lowResSrc: null,
-                alt: "Github Logo",
-            },
-            url,
-            programmingLanguage,
         });
-    }
-
-    return githubProjects;
 };
 
 export const scrapeCults3d = (doc: Document): Project[] => {
@@ -86,9 +59,9 @@ export const scrapeCults3d = (doc: Document): Project[] => {
         const urlElement = projectElement.querySelector('a[class*="drawer-contents"]');
         const imageElement = projectElement.querySelector('img[class*="painting-image"]');
 
-        let title;
-        let url;
-        let image;
+        let title: string | undefined;
+        let url: URL | undefined;
+        let image: Image | undefined;
 
         const titleValue = titleElement?.getAttribute("title");
         if (titleValue) {
@@ -119,7 +92,7 @@ export const scrapeCults3d = (doc: Document): Project[] => {
             } as Image;
         }
 
-        cults3dProjects.push({ host: "cults3d", title, url, image });
+        cults3dProjects.push({ host: "Cults 3D", title, url, image });
     }
 
     return cults3dProjects;
@@ -141,16 +114,16 @@ export const scrapeBgg = (doc: Document): Project[] => {
         );
         const urlElement = projectElement.querySelector('td[class*="collection_thumbnail"] > a');
 
-        let title;
-        let description;
-        let url;
-        let image;
+        let title: string | undefined;
+        let description: string | undefined;
+        let url: URL | undefined;
+        let image: Image | undefined;
 
         if (titleElement) {
-            title = titleElement.innerHTML.trim();
+            title = titleElement.textContent?.trim();
         }
         if (descriptionElement) {
-            description = descriptionElement.innerHTML.trim();
+            description = descriptionElement.textContent?.trim();
         }
         const href = urlElement?.getAttribute("href");
         if (href) {
@@ -161,11 +134,11 @@ export const scrapeBgg = (doc: Document): Project[] => {
                 highResSrc: imageElement.getAttribute("src"),
                 lowResSrc: null,
                 alt: imageElement.getAttribute("alt"),
-            } as Image;
+            };
         }
 
         bggProjects.push({
-            host: "boardgamegeek",
+            host: "Board Game Geek",
             title,
             description,
             url,
@@ -176,12 +149,19 @@ export const scrapeBgg = (doc: Document): Project[] => {
     return bggProjects;
 };
 
-export const upgradeBggImage = (project: Project, xmlDoc: XMLDocument) => {
+export const upgradeBggData = (project: Project, xmlDoc: XMLDocument) => {
     const imageXmlElement = xmlDoc.getElementsByTagName("image").item(0);
     if (imageXmlElement && project.image) {
         project.image.lowResSrc = project.image.highResSrc;
-        project.image.highResSrc = imageXmlElement.innerHTML;
+        project.image.highResSrc = imageXmlElement.textContent;
     }
+    const mechanicXmlElements = xmlDoc.getElementsByTagName("boardgamemechanic");
+    const mechanics: string[] = [];
+    for (const mechanic of mechanicXmlElements) {
+        mechanics.push(mechanic.textContent ?? "");
+    }
+
+    project.chips = mechanics;
 };
 
 export const projectIntoTemplate = (
@@ -206,12 +186,7 @@ export const projectIntoTemplate = (
     };
 
     // Set project title
-    setElementContent('[class*="card-heading"]', project.title, (element, content) => {
-        element.textContent = domPurify.sanitize(content);
-    });
-
-    // Set project description
-    setElementContent('[class*="card-description"]', project.description, (element, content) => {
+    setElementContent('[class*="card-title"]', project.title, (element, content) => {
         element.textContent = domPurify.sanitize(content);
     });
 
@@ -223,6 +198,22 @@ export const projectIntoTemplate = (
             element.href = domPurify.sanitize(content.href);
         },
     );
+    // Set project Call to Action button
+    setElementContent<HTMLLinkElement, string>(
+        '[class*="card-link"]',
+        project.host,
+        (element, content) => {
+            const cta = element.getElementsByTagName("p")?.item(0);
+            if (cta) {
+                cta.innerText = cta.innerText.replace("{Platform}", domPurify.sanitize(content));
+            }
+        },
+    );
+
+    // Set project description
+    setElementContent('[class*="card-description"]', project.description, (element, content) => {
+        element.textContent = domPurify.sanitize(content);
+    });
 
     // Set project language
     setElementContent<Element, Language>(
@@ -238,20 +229,30 @@ export const projectIntoTemplate = (
         '[class*="card-language-colour"]',
         project.programmingLanguage,
         (element, content) => {
-            element.setAttribute("style", domPurify.sanitize(content.style));
+            element.setAttribute("style", `background-color: ${domPurify.sanitize(content.color)}`);
+        },
+    );
+
+    // Set project language colour
+    setElementContent<Element, string[]>(
+        '[class*="card-chips"]',
+        project.chips,
+        (element, content) => {
+            for (const chip of content) {
+                const chipElement = document.createElement("span");
+                chipElement.classList.add("chip");
+                chipElement.textContent = chip;
+                element.append(chipElement);
+            }
         },
     );
 
     // Set logo text
-    setElementContent<LogoLink, string>(
-        '[class*="card-logo"]',
-        project.host,
-        (element, content) => {
-            element.innerHTML = domPurify.sanitize(content);
-        },
-    );
+    setElementContent<Logo, string>('[class*="card-logo"]', project.host, (element, content) => {
+        element.ariaLabel = domPurify.sanitize(content);
+    });
     // Set logo link
-    setElementContent<LogoLink, URL>('[class*="card-logo"]', project.url, (element, content) => {
+    setElementContent<Logo, URL>('[class*="card-logo"]', project.url, (element, content) => {
         element.setAttribute("href", domPurify.sanitize(content.href));
     });
 
@@ -276,6 +277,7 @@ export const projectIntoTemplate = (
                     }
                 };
             } else if (highRes) {
+                element.loading = "lazy";
                 element.onload = () => {
                     element.src = domPurify.sanitize(highRes);
                 };

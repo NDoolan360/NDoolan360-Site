@@ -2,8 +2,8 @@
     "version": 2,
     "rewrites": [
         {
-            "source": "/proxy/github",
-            "destination": "https://github.com/NDoolan360"
+            "source": "/proxy/api/github",
+            "destination": "https://api.github.com/users/NDoolan360/repos"
         },
         {
             "source": "/proxy/cults3d",

@@ -1,23 +1,24 @@
 import { describe, expect, test } from "bun:test";
 import { file } from "bun";
 import {
+    GithubRepo,
+    githubRepoToProject,
     projectIntoTemplate,
     scrapeBgg,
     scrapeCults3d,
-    scrapeGithub,
-    upgradeBggImage,
+    upgradeBggData,
 } from "projects";
-import { fetchData } from "utils";
+import { fetchData, fetchJson } from "utils";
 
 describe("Projects", () => {
     test("Github project into Template", async () => {
         const indexData = await file("index.html").text();
         const indexMockDoc = await fetchData(indexData);
-        const githubMockData = await file("tests/data/githubProjects.html").text();
-        const githubMockDoc = await fetchData(githubMockData);
+        const githubMockData = await file("tests/data/githubRepos.json").text();
+        const githubMockJson = await fetchJson<GithubRepo[]>(githubMockData);
 
         const template = indexMockDoc.getElementById("project-template") as HTMLTemplateElement;
-        const githubProjects = scrapeGithub(githubMockDoc);
+        const githubProjects = githubRepoToProject(githubMockJson);
         const project = githubProjects.at(0);
 
         expect(project).not.toBeUndefined();
@@ -26,12 +27,12 @@ describe("Projects", () => {
             const fragment = projectIntoTemplate(project, template);
 
             expect(
-                fragment.querySelector<HTMLHeadingElement>('[class*="card-heading"]')?.textContent,
-            ).toBe("NDoolan360-Site");
+                fragment.querySelector<HTMLHeadingElement>('[class*="card-title"]')?.textContent,
+            ).toBe("NDoolan360 Site");
             expect(
                 fragment.querySelector<HTMLParagraphElement>('[class*="card-description"]')
                     ?.textContent,
-            ).toBe("My hand crafted personal website");
+            ).toBe("My hand crafted personal website 🎨🌝");
             expect(fragment.querySelector<HTMLAnchorElement>('[class*="card-link"]')?.href).toBe(
                 "https://github.com/NDoolan360/NDoolan360-Site",
             );
@@ -44,15 +45,10 @@ describe("Projects", () => {
                     .querySelector<HTMLSpanElement>('[class*="card-language-colour"]')
                     ?.getAttribute("style"),
             ).toBe("background-color: #3178c6");
-            expect(fragment.querySelector<HTMLAnchorElement>('[class*="card-logo"]')?.href).toBe(
-                "https://github.com/NDoolan360/NDoolan360-Site",
-            );
-            expect(
-                fragment.querySelector<HTMLAnchorElement>('[class*="card-logo"]')?.innerHTML,
-            ).toBe("github");
+            expect(fragment.querySelector('[class*="card-logo"]')?.ariaLabel).toBe("Github");
             expect(
                 fragment.querySelector<HTMLImageElement>('[class*="card-feature-image"]')?.src,
-            ).toBe("/images/default.webp");
+            ).toBeUndefined();
         }
     });
 
@@ -72,7 +68,7 @@ describe("Projects", () => {
             const fragment = projectIntoTemplate(project, template);
 
             expect(
-                fragment.querySelector<HTMLHeadingElement>('[class*="card-heading"]')?.textContent,
+                fragment.querySelector<HTMLHeadingElement>('[class*="card-title"]')?.textContent,
             ).toBe("Reciprocating Rack and Pinion Fidget V2");
             expect(
                 fragment.querySelector<HTMLParagraphElement>('[class*="card-description"]')
@@ -90,12 +86,7 @@ describe("Projects", () => {
                     .querySelector<HTMLSpanElement>('[class*="card-language-colour"]')
                     ?.getAttribute("style"),
             ).toBeUndefined();
-            expect(fragment.querySelector<HTMLAnchorElement>('[class*="card-logo"]')?.href).toBe(
-                "https://cults3d.com/en/3d-model/gadget/reciprocating-rack-and-pinion-fidget-v2",
-            );
-            expect(
-                fragment.querySelector<HTMLAnchorElement>('[class*="card-logo"]')?.innerHTML,
-            ).toBe("cults3d");
+            expect(fragment.querySelector('[class*="card-logo"]')?.ariaLabel).toBe("Cults 3D");
             const featureImage = fragment.querySelector<HTMLImageElement>(
                 '[class*="card-feature-image"]',
             );
@@ -131,13 +122,13 @@ describe("Projects", () => {
 
         expect(project).not.toBeUndefined();
         if (project) {
-            upgradeBggImage(project, bggMockXml);
+            upgradeBggData(project, bggMockXml);
 
             expect(template).not.toBeUndefined();
             const fragment = projectIntoTemplate(project, template);
 
             expect(
-                fragment.querySelector<HTMLHeadingElement>('[class*="card-heading"]')?.textContent,
+                fragment.querySelector<HTMLHeadingElement>('[class*="card-title"]')?.textContent,
             ).toBe("Cake Toppers");
             expect(
                 fragment.querySelector<HTMLParagraphElement>('[class*="card-description"]')
@@ -155,12 +146,9 @@ describe("Projects", () => {
                     .querySelector<HTMLSpanElement>('[class*="card-language-colour"]')
                     ?.getAttribute("style"),
             ).toBeUndefined();
-            expect(fragment.querySelector<HTMLAnchorElement>('[class*="card-logo"]')?.href).toBe(
-                "https://boardgamegeek.com/boardgame/330653/cake-toppers",
+            expect(fragment.querySelector('[class*="card-logo"]')?.ariaLabel).toBe(
+                "Board Game Geek",
             );
-            expect(
-                fragment.querySelector<HTMLAnchorElement>('[class*="card-logo"]')?.innerHTML,
-            ).toBe("boardgamegeek");
             const featureImage = fragment.querySelector<HTMLImageElement>(
                 '[class*="card-feature-image"]',
             );

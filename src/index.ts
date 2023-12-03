@@ -1,12 +1,14 @@
 import { inject } from "@vercel/analytics";
+import "./index.css";
 import {
+    GithubRepo,
+    githubRepoToProject,
     projectIntoTemplate,
     scrapeBgg,
     scrapeCults3d,
-    scrapeGithub,
-    upgradeBggImage,
+    upgradeBggData,
 } from "./projects";
-import { fetchData, replaceWithCurrentYear } from "./utils";
+import { fetchData, fetchJson, replaceWithCurrentYear } from "./utils";
 
 // Insert Analytics
 inject();
@@ -14,7 +16,7 @@ inject();
 // Update copyright year
 const copyright = document.getElementById("copyright");
 if (copyright) {
-    copyright.innerHTML = replaceWithCurrentYear(copyright.innerHTML, "{current year}");
+    copyright.innerHTML = replaceWithCurrentYear(copyright.innerHTML, "2023");
 }
 
 const loadProjects = async () => {
@@ -28,8 +30,8 @@ const loadProjects = async () => {
     const template = document.getElementById("project-template") as HTMLTemplateElement | undefined;
 
     if (gallery && template) {
-        const githubPage = await fetchData("/proxy/github");
-        const githubProjects = scrapeGithub(githubPage).map((p) =>
+        const githubPage = await fetchJson<GithubRepo[]>("/proxy/api/github");
+        const githubProjects = githubRepoToProject(githubPage).map((p) =>
             projectIntoTemplate(p, template),
         );
         gallery.append(...githubProjects);
@@ -44,7 +46,7 @@ const loadProjects = async () => {
                 ?.split("/")
                 .find((v) => v.match(/\d+/g));
             const gameXml = await fetchData(`/proxy/xmlapi/boardgamegeek/${id}`, "text/xml");
-            upgradeBggImage(project, gameXml);
+            upgradeBggData(project, gameXml);
         }
 
         const bggProjects = bggRawProjects.map((p) => projectIntoTemplate(p, template));
