@@ -18,5 +18,17 @@
         "clientKind": "git",
         "enabled": true,
         "useIgnoreFile": true
-    }
+    },
+    "overrides": [
+        {
+            "include": ["*.config.ts"],
+            "linter": {
+                "rules": {
+                    "nursery": {
+                        "noDefaultExport": "off"
+                    }
+                }
+            }
+        }
+    ]
 }
