@@ -7,11 +7,10 @@ let theme = "dark";
 const storageTheme = localStorage.getItem("theme");
 if (storageTheme) {
     theme = storageTheme;
-    document.firstElementChild?.setAttribute("data-theme", theme);
 } else if (window.matchMedia) {
     theme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-    document.firstElementChild?.setAttribute("data-theme", theme);
 }
+document.documentElement.setAttribute("data-theme", theme);
 
 export const onClick = () => {
     // flip current value
@@ -26,7 +25,7 @@ export const setPreference = (theme: string) => {
 };
 
 const reflectPreference = (theme: string) => {
-    document.firstElementChild?.setAttribute("data-theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
     document.querySelector("#theme-toggle")?.setAttribute("aria-label", theme);
 };
 
