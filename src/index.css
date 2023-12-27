@@ -43,7 +43,7 @@
     }
 
     body {
-        @apply container transition-all w-screen min-h-screen mx-auto antialiased leading-relaxed bg-background font-body text-text selection:bg-primary selection:text-secondary lg:flex lg:justify-between motion-reduce:transition-none
+        @apply container transition-all w-screen min-h-screen overflow-x-hidden mx-auto antialiased leading-relaxed bg-background font-body text-text selection:bg-primary selection:text-secondary lg:flex lg:justify-between motion-reduce:transition-none
     }
 
     header {
@@ -103,7 +103,7 @@
     }
 
     .experience-item .date-range {
-        @apply mb-2 mt-1 text-sm font-bold uppercase tracking-wide sm:col-span-1 font-heading
+        @apply mb-2 mt-1 text-sm uppercase tracking-wide sm:col-span-1 font-heading
     }
 
     .experience-item div {

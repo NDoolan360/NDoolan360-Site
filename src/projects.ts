@@ -38,7 +38,7 @@ export const githubRepoToProject = (data: GithubRepo[]): Project[] => {
             return {
                 host: "Github",
                 description: r.description,
-                title: r.name.replace(/[\_\-\.]/, " "),
+                title: r.name.replace(/[\_\-\.]/g, " "),
                 programmingLanguage: {
                     name: r.language,
                     color: githubColors[r.language]?.color ?? "",
