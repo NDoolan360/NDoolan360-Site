@@ -190,7 +190,7 @@
 
     #tools ul,
     #tools div:not(:first-of-type) {
-        @apply flex flex-row gap-1
+        @apply flex flex-row flex-wrap gap-1
     }
 
     #copyright {
