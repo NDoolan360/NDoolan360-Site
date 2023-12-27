@@ -198,14 +198,14 @@ export const projectIntoTemplate = (
             element.href = domPurify.sanitize(content.href);
         },
     );
-    // Set project Call to Action button
-    setElementContent<HTMLLinkElement, string>(
+
+    // Set project link aria-label
+    setElementContent<HTMLLinkElement, (string | undefined)[]>(
         '[class*="card-link"]',
-        project.host,
-        (element, content) => {
-            const cta = element.getElementsByTagName("p")?.item(0);
-            if (cta) {
-                cta.innerText = cta.innerText.replace("{Platform}", domPurify.sanitize(content));
+        [project.host, project.title],
+        (element, [host, title]) => {
+            if (host && title) {
+                element.ariaLabel = `${domPurify.sanitize(title)} on ${domPurify.sanitize(host)}`;
             }
         },
     );
