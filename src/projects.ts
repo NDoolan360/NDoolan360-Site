@@ -285,7 +285,9 @@ export const projectIntoTemplate = (
                         element.loading = "lazy";
                         element.onload = () => {
                             element.src = domPurify.sanitize(highRes);
-                            element.onload = () => {};
+                            element.onload = () => {
+                                // Prevents infinite loading
+                            };
                         };
                     }
                 };
@@ -293,7 +295,9 @@ export const projectIntoTemplate = (
                 element.loading = "lazy";
                 element.onload = () => {
                     element.src = domPurify.sanitize(highRes);
-                    element.onload = () => {};
+                    element.onload = () => {
+                        // Prevents infinite loading
+                    };
                 };
             }
         },
