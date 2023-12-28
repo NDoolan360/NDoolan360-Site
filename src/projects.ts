@@ -282,8 +282,10 @@ export const projectIntoTemplate = (
                 element.onload = () => {
                     element.src = domPurify.sanitize(lowRes);
                     if (highRes) {
+                        element.loading = "lazy";
                         element.onload = () => {
                             element.src = domPurify.sanitize(highRes);
+                            element.onload = () => {};
                         };
                     }
                 };
@@ -291,6 +293,7 @@ export const projectIntoTemplate = (
                 element.loading = "lazy";
                 element.onload = () => {
                     element.src = domPurify.sanitize(highRes);
+                    element.onload = () => {};
                 };
             }
         },
