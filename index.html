@@ -5,6 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" content="#283c37">
     <title>Nathan Doolan</title>
     <meta name="description"
         content="A personal website showcasing Nathan Doolan's journey as a full-time software engineer in Melbourne. Explore his professional experience, projects, and interests in technology, board games, and 3D printing.">
@@ -14,7 +15,6 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png">
     <link rel="icon" href="/images/icons/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-touch-icon.png">
-    <meta name="theme-color" content="#283c37">
     <link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">
 
     <meta property="og:locale" content="en_AU">
@@ -31,19 +31,22 @@
     <link rel="preload" href="/fonts/JosefinSans.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/OxygenMono.woff2" as="font" type="font/woff2" crossorigin>
 
-    <script type="module" src="/src/theme.ts"></script>
-    <script type="module" src="/src/projects.ts"></script>
-    <script type="module" src="/src/misc.ts"></script>
+    <link rel="stylesheet" href="/src/styles.css">
+
+    <script>
+        var theme = window.localStorage.getItem("theme");
+        theme && document.documentElement.setAttribute("data-theme", theme)
+    </script>
+    <script type="module" src="/src/theme.ts" defer></script>
+    <script type="module" src="/src/projects.ts" defer></script>
+    <script type="module" src="/src/misc.ts" defer></script>
 </head>
 
 <body>
     <header>
         <h1>
-            <a href="/">
-                /ND
-            </a>
+            <a href="/"> /ND </a>
         </h1>
-
         <nav>
             <ul id="internal-links" aria-label="internal links">
                 <li><a href="#about">About</a></li>
@@ -51,7 +54,6 @@
                 <li><a href="#projects">Projects</a></li>
             </ul>
         </nav>
-
         <ul id="external-links" aria-label="external links">
             <li>
                 <a href="https://github.com/NDoolan360" target="_blank" rel="noreferrer">
@@ -92,7 +94,7 @@
                 <!-- Theme button toggle adapted from: https://web.dev/patterns/theming/theme-switch/#html -->
                 <template id="theme-toggle-template">
                     <button id="theme-toggle" title="Toggles light & dark theme" aria-label="auto" aria-live="polite">
-                        <svg class="sun-and-moon" aria-hidden="true" viewBox="0 0 24 24">
+                        <svg class="sun-and-moon" aria-hidden="true" viewBox="0 0 24 24" height="24" width="24">
                             <mask class="moon" id="moon-mask">
                                 <rect x="0" y="0" width="100%" height="100%" fill="white" />
                                 <circle cx="24" cy="10" r="6" fill="black" />
@@ -122,8 +124,9 @@
                 <hr>
             </div>
             <div id="profile">
-                <img alt="Profile Image" title="Picture of me at the Strawberry Field in Liverpool" loading="eager"
-                    src="/images/profile.webp" height="192">
+                <img alt="Profile Image" title="Picture of me at the Strawberry Field in Liverpool"
+                    srcset="/images/profile-192.webp, /images/profile-512.webp 2.66x, /images/profile-792.webp 4.125x"
+                    src="/images/profile-192.webp" height="192">
                 <div>
                     <p>
                         Hey there, I'm Nathan Doolan, a full-time software engineer based in Melbourne, Australia.
@@ -235,14 +238,14 @@
                 <template id="project-template">
                     <li class="card">
                         <a class="card-link" href="" target="_blank" rel="noreferrer"></a>
-                        <img class="card-feature-image">
+                        <img class="card-feature-image" height="192">
                         <div class="card-detail-section">
                             <h3 class="card-title"></h3>
                             <div class="card-detail">
                                 <span class="card-language-colour"></span>
                                 <p class="card-language-name"></p>
                                 <svg class="card-logo logo" height="24" width="24" aria-label="Logo">
-                                    <use href="/images/logos/melbourneuniversity.svg#logo"></use>
+                                    <use href="/images/logos/logo.svg#logo"></use>
                                 </svg>
                             </div>
                         </div>
