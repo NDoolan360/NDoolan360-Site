@@ -1,8 +1,8 @@
 import autoprefixer from "autoprefixer";
 import tailwindcss from "tailwindcss";
-import sitemap from "vite-plugin-sitemap";
-import { VitePWA } from "vite-plugin-pwa";
 import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
+import sitemap from "vite-plugin-sitemap";
 
 export default defineConfig({
 	plugins: [

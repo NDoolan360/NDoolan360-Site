@@ -31,6 +31,9 @@ export type GithubRepo = {
 };
 
 export const githubRepoToProject = (data: GithubRepo[]): Project[] => {
+    if (!Array.isArray(data)) {
+        return [];
+    }
     const githubColors: { [k: string]: { color: string } | undefined } = githubColorsJson;
     return data
         .filter((r) => !r.fork && r.topics.length > 0)
@@ -248,11 +251,21 @@ export const projectIntoTemplate = (
     );
 
     // Set logo image and aria-label
-    setElementContent<SVGElement, string>('[class*="card-logo"]', project.host, (element, content) => {
-        element.ariaLabel = `${domPurify.sanitize(content)} Logo`;
-        let use = element.children.item(0) as SVGUseElement;
-        use.setAttribute("href", `/images/logos/${domPurify.sanitize(content).toLowerCase().replace(/\s/g, "")}.svg#logo`);
-    });
+    setElementContent<SVGElement, string>(
+        '[class*="card-logo"]',
+        project.host,
+        (element, content) => {
+            element.ariaLabel = `${domPurify.sanitize(content)} Logo`;
+            const use = element.children.item(0) as SVGUseElement;
+            use.setAttribute(
+                "href",
+                `/images/logos/${domPurify
+                    .sanitize(content)
+                    .toLowerCase()
+                    .replace(/\s/g, "")}.svg#logo`,
+            );
+        },
+    );
 
     // Set project feature image
     setElementContent<HTMLImageElement, Image>(
