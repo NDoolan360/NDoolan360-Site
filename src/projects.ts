@@ -1,6 +1,5 @@
 import domPurify from "dompurify";
 import * as githubColorsJson from "./github-colors.json";
-import { Logo } from "./logo-web-component";
 import { fetchData, fetchJson } from "./utils";
 
 type Site = "Cults 3D" | "Github" | "Board Game Geek";
@@ -248,13 +247,11 @@ export const projectIntoTemplate = (
         },
     );
 
-    // Set logo text
-    setElementContent<Logo, string>('[class*="card-logo"]', project.host, (element, content) => {
+    // Set logo image and aria-label
+    setElementContent<SVGElement, string>('[class*="card-logo"]', project.host, (element, content) => {
         element.ariaLabel = `${domPurify.sanitize(content)} Logo`;
-    });
-    // Set logo link
-    setElementContent<Logo, URL>('[class*="card-logo"]', project.url, (element, content) => {
-        element.setAttribute("href", domPurify.sanitize(content.href));
+        let use = element.children.item(0) as SVGUseElement;
+        use.setAttribute("href", `/images/logos/${domPurify.sanitize(content).toLowerCase().replace(/\s/g, "")}.svg#logo`);
     });
 
     // Set project feature image

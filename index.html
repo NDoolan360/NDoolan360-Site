@@ -32,7 +32,6 @@
     <link rel="preload" href="/fonts/OxygenMono.woff2" as="font" type="font/woff2" crossorigin>
 
     <script type="module" src="/src/theme.ts"></script>
-    <script type="module" src="/src/logo-web-component.ts"></script>
     <script type="module" src="/src/projects.ts"></script>
     <script type="module" src="/src/misc.ts"></script>
 </head>
@@ -56,27 +55,37 @@
         <ul id="external-links" aria-label="external links">
             <li>
                 <a href="https://github.com/NDoolan360" target="_blank" rel="noreferrer">
-                    <span is="custom-logo" aria-label="Github Logo"></span>
+                    <svg class="logo" height="24" width="24" aria-label="Github Logo">
+                        <use href="/images/logos/github.svg#logo"></use>
+                    </svg>
                 </a>
             </li>
             <li>
                 <a href="https://www.linkedin.com/in/nathan-doolan-835a13171" target="_blank" rel="noreferrer">
-                    <span is="custom-logo" aria-label="LinkedIn Logo"></span>
+                    <svg class="logo" height="24" width="24" aria-label="LinkedIn Logo">
+                        <use href="/images/logos/linkedin.svg#logo"></use>
+                    </svg>
                 </a>
             </li>
             <li>
                 <a href="https://discord.com/users/nothindoin" target="_blank" rel="noreferrer">
-                    <span is="custom-logo" aria-label="Discord Logo"></span>
+                    <svg class="logo" height="24" width="24" aria-label="Discord Logo">
+                        <use href="/images/logos/discord.svg#logo"></use>
+                    </svg>
                 </a>
             </li>
             <li>
                 <a href="https://cults3d.com/en/users/ND360" target="_blank" rel="noreferrer">
-                    <span is="custom-logo" aria-label="Cults3D Logo"></span>
+                    <svg class="logo" height="24" width="24" aria-label="Cults3D Logo">
+                        <use href="/images/logos/cults3d.svg#logo"></use>
+                    </svg>
                 </a>
             </li>
             <li>
                 <a href="https://boardgamegeek.com/user/Nothin_Doin" target="_blank" rel="noreferrer">
-                    <span is="custom-logo" aria-label="Board Game Geek Logo"></span>
+                    <svg class="logo" height="24" width="24" aria-label="Board Game Geek Logo">
+                        <use href="/images/logos/boardgamegeek.svg#logo"></use>
+                    </svg>
                 </a>
             </li>
             <li>
@@ -140,7 +149,9 @@
                     <span class="date-range">Jan 2024 - Present</span>
                     <div>
                         <a class="experience-title" href="https://kaluza.com/" target="_blank" rel="noreferrer">
-                            <span is="custom-logo" aria-label="Kaluza Logo"></span>
+                            <svg class="logo" height="24" width="24" aria-label="Kaluza Logo">
+                                <use href="/images/logos/kaluza.svg#logo"></use>
+                            </svg>
                             <h3>Kaluza</h3>
                         </a>
                         <h4 class="current">Software Engineer</h4>
@@ -155,7 +166,8 @@
                     <span class="date-range">Jul 2021 - Dec 2023</span>
                     <div>
                         <a class="experience-title" href="https://gentrack.com" target="_blank" rel="noreferrer">
-                            <span is="custom-logo" aria-label="Gentrack Logo"></span>
+                            <img alt="Gentrack Logo" src="/images/logos/gentrack.svg" class="logo" height="24"
+                                width="24" />
                             <h3>Gentrack</h3>
                         </a>
                         <h4>Intermediate Software Engineer</h4>
@@ -175,7 +187,9 @@
                     <span class="date-range">Feb 2018 - Jul 2021</span>
                     <div>
                         <a class="experience-title" href="https://pqrs.com.au" target="_blank" rel="noreferrer">
-                            <span is="custom-logo" aria-label="Proquip Logo"></span>
+                            <svg class="logo" height="24" width="24" aria-label="Proquip Logo">
+                                <use href="/images/logos/proquip.svg#logo"></use>
+                            </svg>
                             <h3>Proquip Rental & Sales</h3>
                         </a>
                         <h4>IT Support Specialist</h4>
@@ -192,7 +206,9 @@
                     <span class="date-range">Feb 2018 - Feb 2021</span>
                     <div>
                         <a class="experience-title" href="https://www.unimelb.edu.au" target="_blank" rel="noreferrer">
-                            <span is="custom-logo" aria-label="Melbourne University Logo"></span>
+                            <svg class="logo" height="24" width="24" aria-label="Melbourne University Logo">
+                                <use href="/images/logos/melbourneuniversity.svg#logo"></use>
+                            </svg>
                             <h3>University of Melbourne</h3>
                         </a>
                         <a class="experience-subtitle"
@@ -225,7 +241,9 @@
                             <div class="card-detail">
                                 <span class="card-language-colour"></span>
                                 <p class="card-language-name"></p>
-                                <span class="card-logo" is="custom-logo" aria-label="Logo"></span>
+                                <svg class="card-logo logo" height="24" width="24" aria-label="Logo">
+                                    <use href="/images/logos/melbourneuniversity.svg#logo"></use>
+                                </svg>
                             </div>
                         </div>
                         <p class="card-description"></p>
@@ -237,39 +255,46 @@
 
         <footer>
             <div id="tools">
-                <h4>Built with:</h4>
+                <h3>Built with:</h3>
                 <ul>
                     <li>
                         <a class="btn" href="https://bun.sh" target="_blank" rel="noreferrer">
-                            <span is="custom-logo" aria-label="Bun Logo"></span>
+                            <svg class="logo" height="24" width="24" aria-label="Bun Logo">
+                                <use href="/images/logos/bun.svg#logo"></use>
+                            </svg>
                             <p>Bun</p>
                         </a>
                     </li>
                     <li>
                         <a class="btn" href="https://vitejs.dev" target="_blank" rel="noreferrer">
-                            <span is="custom-logo" aria-label="Vite Logo"></span>
+                            <img alt="Vite Logo" src="/images/logos/vite.svg" class="logo" height="24" width="24" />
                             <p>Vite</p>
                         </a>
                     </li>
                     <li>
                         <a class="btn" href="https://tailwindcss.com" target="_blank" rel="noreferrer">
-                            <span is="custom-logo" aria-label="Tailwind CSS Logo"></span>
+                            <svg class="logo" height="24" width="24" aria-label="Tailwind CSS Logo">
+                                <use href="/images/logos/tailwind.svg#logo"></use>
+                            </svg>
                             <p>Tailwind CSS</p>
                         </a>
                     </li>
                     <li>
-
                         <a class="btn" href="https://biomejs.dev" target="_blank" rel="noreferrer">
-                            <span is="custom-logo" aria-label="Biome Logo"></span>
+                            <svg class="logo" height="24" width="24" aria-label="Biome Logo">
+                                <use href="/images/logos/biome.svg#logo"></use>
+                            </svg>
                             <p>Biome</p>
                         </a>
                     </li>
                 </ul>
             </div>
             <div>
-                <h4>Deployed with:</h4>
+                <h3>Deployed with:</h3>
                 <a class="btn" href="https://vercel.com" target="_blank" rel="noreferrer">
-                    <span is="custom-logo" aria-label="Vercel Logo"></span>
+                    <svg class="logo" height="24" width="24" aria-label="Vercel Logo">
+                        <use href="/images/logos/vercel.svg#logo"></use>
+                    </svg>
                     <p>Vercel</p>
                 </a>
             </div>
