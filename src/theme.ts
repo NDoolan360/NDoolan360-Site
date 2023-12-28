@@ -1,3 +1,4 @@
+import "./index.css";
 import "./theme-switch.css";
 
 // Below script Adapted from:
